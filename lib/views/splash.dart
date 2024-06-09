@@ -1,4 +1,4 @@
-import 'package:dus_app/views/home/home.dart';
+import 'package:dus_app/views/auth/auth.dart';
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatelessWidget {
@@ -6,6 +6,6 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const HomePage();
+    return const AuthPage();
   }
 }
