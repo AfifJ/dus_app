@@ -1,5 +1,6 @@
 import 'package:dus_app/config/constant.dart';
 import 'package:dus_app/views/auth/login.dart';
+import 'package:dus_app/views/auth/register.dart';
 import 'package:flutter/material.dart';
 
 class AuthPage extends StatefulWidget {
@@ -119,7 +120,13 @@ class _AuthPageState extends State<AuthPage> {
                           color: Constant.colorWhite.withOpacity(0.85),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const RegisterPage(),
+                          ),
+                        );
+                      },
                       child: const Text(
                         'Register',
                         style: TextStyle(

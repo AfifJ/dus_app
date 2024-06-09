@@ -2,18 +2,16 @@ import 'package:dus_app/config/constant.dart';
 import 'package:dus_app/views/home/home.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   TextEditingController emailController = TextEditingController();
-  TextEditingController passController = TextEditingController();
 
-  bool isHide = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,21 +19,18 @@ class _LoginPageState extends State<LoginPage> {
       body: SafeArea(
         child: ListView(
           children: [
-            const SizedBox(
-              height: 15,
-            ),
-            Image.asset(
-              'images/logo/logo_white.png',
-              width: 60,
-              height: 35,
-            ),
-            const SizedBox(
-              height: 20,
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 50),
+              child: Image.asset(
+                'images/logo/logo_white.png',
+                width: 60,
+                height: 35,
+              ),
             ),
             const Padding(
               padding: EdgeInsets.all(20),
               child: Text(
-                'Sekarang sampahmu menjadi lebih berharga',
+                'Bergabung dengan kami dan jadikan sampahmu berharga',
                 style: TextStyle(
                   fontSize: 24,
                   color: Constant.colorWhite,
@@ -43,10 +38,30 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            Image.asset(
-              'images/login_illustration.png',
-              width: 290,
-              height: 145,
+            Container(
+              padding: const EdgeInsets.only(left: 20),
+              width: double.infinity,
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Bagi kami, semua sampah itu berharga. bergabung bersama kami dan jadikan bumi lebih baik.',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Constant.colorWhite,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  Image.asset(
+                    'images/regist_illustration.png',
+                    width: 225,
+                    height: 175,
+                  ),
+                ],
+              ),
             ),
             const SizedBox(
               height: 5,
@@ -69,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(
                     width: double.maxFinite,
                     child: Text(
-                      'Login Dulu',
+                      'Daftar Dulu',
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: Constant.fontBold,
@@ -102,38 +117,6 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(
                     height: 15,
                   ),
-                  const Text(
-                    'Password',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: Constant.fontSemiBold,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: passController,
-                    obscureText: isHide,
-                    decoration: InputDecoration(
-                      hintText: '********',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(
-                            () {
-                              isHide = !isHide;
-                            },
-                          );
-                        },
-                        icon: Icon(
-                          isHide ? Icons.visibility : Icons.visibility_off,
-                        ),
-                      ),
-                    ),
-                  ),
                   const SizedBox(
                     height: 25,
                   ),
@@ -158,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       },
                       child: const Text(
-                        'Masuk',
+                        'Daftar',
                         style: TextStyle(
                           color: Constant.colorWhite,
                           fontSize: 16,
