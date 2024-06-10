@@ -1,20 +1,22 @@
 import 'package:dus_app/config/constant.dart';
-import 'package:dus_app/views/auth/register.dart';
 import 'package:dus_app/views/home/home.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class BiodataPage extends StatefulWidget {
+  const BiodataPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<BiodataPage> createState() => _BiodataPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  TextEditingController emailController = TextEditingController();
+class _BiodataPageState extends State<BiodataPage> {
+  TextEditingController namaLengkapController = TextEditingController();
   TextEditingController passController = TextEditingController();
+  TextEditingController confirmPassController = TextEditingController();
 
   bool isHide = true;
+  bool isChecked = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
               height: 30,
             ),
             const Text(
-              'Login Dulu',
+              'Lengkapi Data Diri',
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: Constant.fontBold,
@@ -38,21 +40,10 @@ class _LoginPageState extends State<LoginPage> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(
-              height: 30,
+              height: 50,
             ),
             const Text(
-              'Silahkan masuk dengan akun anda yang sudah terdaftar',
-              style: TextStyle(
-                fontSize: 16,
-                color: Constant.colorButton,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            const Text(
-              'Email',
+              'Nama lengkap',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: Constant.fontSemiBold,
@@ -62,9 +53,9 @@ class _LoginPageState extends State<LoginPage> {
               height: 10,
             ),
             TextField(
-              controller: emailController,
+              controller: namaLengkapController,
               decoration: InputDecoration(
-                hintText: 'anda@email.com',
+                hintText: 'Nama anda',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
@@ -87,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
               controller: passController,
               obscureText: isHide,
               decoration: InputDecoration(
-                hintText: 'Sandi',
+                hintText: 'Kata Sandi',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
@@ -107,6 +98,96 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(
               height: 30,
+            ),
+            const Text(
+              'Konfirmasi Sandi',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: Constant.fontSemiBold,
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            TextField(
+              controller: confirmPassController,
+              obscureText: isHide,
+              decoration: InputDecoration(
+                hintText: 'Kata Sandi',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Checkbox(
+                  value: isChecked,
+                  onChanged: (data) {
+                    setState(
+                      () {
+                        isChecked = !isChecked;
+                      },
+                    );
+                  },
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Row(
+                  children: [
+                    const Text(
+                      'Saya menyetujui',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Constant.colorBlack,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.all(5),
+                      ),
+                      child: const Text(
+                        'syarat',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Constant.colorBlack,
+                          fontWeight: Constant.fontBold,
+                        ),
+                      ),
+                    ),
+                    const Text(
+                      'dan',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Constant.colorBlack,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.all(5),
+                      ),
+                      child: const Text(
+                        'kebijakan',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Constant.colorBlack,
+                          fontWeight: Constant.fontBold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 15,
             ),
             SizedBox(
               width: double.infinity,
@@ -129,7 +210,7 @@ class _LoginPageState extends State<LoginPage> {
                   );
                 },
                 child: const Text(
-                  'Masuk',
+                  'Daftar',
                   style: TextStyle(
                     color: Constant.colorWhite,
                     fontSize: 16,
@@ -138,38 +219,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             const SizedBox(
-              height: 30,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    color: Constant.colorBlack,
-                    height: 1,
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                const Text(
-                  'Atau',
-                  style: TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  child: Container(
-                    color: Constant.colorBlack,
-                    height: 1,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 30,
+              height: 25,
             ),
             SizedBox(
               width: double.infinity,
@@ -188,58 +238,17 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 onPressed: () {},
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'images/google.png',
-                      width: 28,
-                      height: 28,
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    const Text(
-                      'Masuk dengan Google',
-                      style: TextStyle(
-                        color: Constant.colorBlack,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
+                child: const Text(
+                  'Daftar Sebagai Pendaur Ulang',
+                  style: TextStyle(
+                    color: Constant.colorBlack,
+                    fontSize: 16,
+                  ),
                 ),
               ),
             ),
             const SizedBox(
               height: 30,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Belum punya akun?',
-                  style: TextStyle(
-                    fontSize: 15,
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => const RegisterPage(),
-                      ),
-                    );
-                  },
-                  child: const Text(
-                    'Daftar',
-                    style: TextStyle(
-                      fontWeight: Constant.fontBold,
-                      color: Constant.colorBlack,
-                      fontSize: 15,
-                    ),
-                  ),
-                ),
-              ],
             ),
           ],
         ),

@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Constant.colorGreen,
+              color: Constant.colorIjoLumut,
               borderRadius: BorderRadius.circular(16),
             ),
             child: const Column(
