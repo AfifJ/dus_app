@@ -13,28 +13,133 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Container(
-          padding: const EdgeInsets.only(left: 10),
-          child: Image.asset(
-            'images/logo/logo_green.png',
-          ),
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              icon: const Icon(
+                Icons.menu,
+                size: 24,
+              ),
+            );
+          },
+        ),
+        title: Image.asset(
+          'images/logo/logo_green.png',
+          width: 75,
+          height: 35,
         ),
         actions: [
           IconButton(
             onPressed: () {},
             icon: const Icon(
-              Icons.chat,
+              Icons.drafts,
               size: 24,
             ),
           ),
           IconButton(
             onPressed: () {},
             icon: const Icon(
-              Icons.menu,
+              Icons.notifications,
               size: 24,
             ),
           ),
         ],
+      ),
+      drawer: Drawer(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20),
+              child: const Text(
+                'Menu',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: Constant.fontBold,
+                  color: Constant.colorBlack,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: ListTile(
+                onTap: () {},
+                leading: const Icon(
+                  Icons.person_rounded,
+                  size: 52,
+                ),
+                title: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'John Doe',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: Constant.fontMedium,
+                        color: Constant.colorBlack,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      'john@doe.com',
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.person_2,
+                size: 24,
+              ),
+              title: const Text(
+                'Pengaturan Akun',
+                style: TextStyle(fontSize: 16),
+              ),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.pin_drop_outlined,
+                size: 24,
+              ),
+              title: const Text(
+                'Alamat Saya',
+                style: TextStyle(fontSize: 16),
+              ),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.question_mark,
+                size: 24,
+              ),
+              title: const Text(
+                'Dapatkan Bantuan',
+                style: TextStyle(fontSize: 16),
+              ),
+              onTap: () {},
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: Constant.colorAccentYellow,
+        child: const Icon(
+          Icons.add,
+          size: 45,
+          color: Constant.colorWhite,
+        ),
       ),
       body: ListView(
         padding: const EdgeInsets.all(10),
@@ -81,39 +186,39 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          const SizedBox(
-            height: 30,
-          ),
-          const Text(
-            'DRAFT',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: Constant.fontBold,
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Container(
-            constraints: const BoxConstraints(
-              maxHeight: 200,
-            ),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Wrap(
-                spacing: 15,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: [
-                  _addListButton(),
-                  _itemDataDraft(name: 'Draft 1', updatedDate: '12-09-2024'),
-                  _itemDataDraft(name: 'Draft 2', updatedDate: '12-09-2024'),
-                  _itemDataDraft(name: 'Draft 3', updatedDate: '12-09-2024'),
-                  _itemDataDraft(name: 'Draft 4', updatedDate: '12-09-2024'),
-                  _itemDataDraft(name: 'Draft 5', updatedDate: '12-09-2024'),
-                ],
-              ),
-            ),
-          ),
+          // const SizedBox(
+          //   height: 30,
+          // ),
+          // const Text(
+          //   'DRAFT',
+          //   style: TextStyle(
+          //     fontSize: 16,
+          //     fontWeight: Constant.fontBold,
+          //   ),
+          // ),
+          // const SizedBox(
+          //   height: 10,
+          // ),
+          // Container(
+          //   constraints: const BoxConstraints(
+          //     maxHeight: 200,
+          //   ),
+          //   child: SingleChildScrollView(
+          //     scrollDirection: Axis.horizontal,
+          //     child: Wrap(
+          //       spacing: 15,
+          //       crossAxisAlignment: WrapCrossAlignment.center,
+          //       children: [
+          //         _addListButton(),
+          //         _itemDataDraft(name: 'Draft 1', updatedDate: '12-09-2024'),
+          //         _itemDataDraft(name: 'Draft 2', updatedDate: '12-09-2024'),
+          //         _itemDataDraft(name: 'Draft 3', updatedDate: '12-09-2024'),
+          //         _itemDataDraft(name: 'Draft 4', updatedDate: '12-09-2024'),
+          //         _itemDataDraft(name: 'Draft 5', updatedDate: '12-09-2024'),
+          //       ],
+          //     ),
+          //   ),
+          // ),
           const SizedBox(
             height: 30,
           ),
@@ -348,11 +453,16 @@ class _HomePageState extends State<HomePage> {
             context: context,
             name: 'Data 1',
             status: 'Menunggu konfirmasi driver'),
-        _itemHistory(context: context, name: 'Data 2', status: 'Selesai'),
         _itemHistory(
-            context: context,
-            name: 'Data 3',
-            status: 'Driver dalam perjalanan'),
+          context: context,
+          name: 'Data 2',
+          status: 'Selesai',
+        ),
+        _itemHistory(
+          context: context,
+          name: 'Data 3',
+          status: 'Driver dalam perjalanan',
+        ),
       ],
     );
   }

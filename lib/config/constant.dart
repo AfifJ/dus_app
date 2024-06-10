@@ -6,6 +6,7 @@ class Constant {
   static const colorGrey = Color(0xFF7C7B7B);
   static const colorWhite = Color(0xFFFFFFFF);
   static const colorBlack = Color(0xFF000000);
+  static const colorAccentYellow = Color(0xFFE0BB5C);
   static const colorTransparent = Color(0x00000000);
 
 
