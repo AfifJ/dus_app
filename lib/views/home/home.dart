@@ -1,4 +1,5 @@
 import 'package:dus_app/config/constant.dart';
+import 'package:dus_app/views/home/add_data.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,6 +13,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Constant.colorBgWhite,
       appBar: AppBar(
         leading: Builder(
           builder: (context) {
@@ -133,7 +135,13 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const AddDataPage(),
+            ),
+          );
+        },
         backgroundColor: Constant.colorAccentYellow,
         child: const Icon(
           Icons.add,
