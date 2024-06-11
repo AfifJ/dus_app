@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "175238473511",
+    "project_id": "daurulangsampah-e5107",
+    "storage_bucket": "daurulangsampah-e5107.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:175238473511:android:30b5a959c412b2592c2b02",
+        "android_client_info": {
+          "package_name": "com.example.dus_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "175238473511-f83libsb9gmijd16upiibt5kdnf3lak0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAM1vf_tL6ufEVEa1HBh41DHtGcAdTdvqg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "175238473511-f83libsb9gmijd16upiibt5kdnf3lak0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "175238473511-csed1u6fjvjn5j6nrn54u3it96fo6jod.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.dusApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
