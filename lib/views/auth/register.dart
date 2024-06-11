@@ -85,9 +85,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 onPressed: () {
+                  final String email = emailController.text;
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                      builder: (context) => const BiodataPage(),
+                      builder: (context) => BiodataPage(email: email),
                     ),
                   );
                 },

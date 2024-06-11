@@ -1,9 +1,11 @@
 import 'package:dus_app/config/constant.dart';
 import 'package:dus_app/views/home/home.dart';
 import 'package:flutter/material.dart';
+import '../../firebase/auth.dart';
 
 class BiodataPage extends StatefulWidget {
-  const BiodataPage({super.key});
+  final String email;
+  const BiodataPage({Key? key, required this.email}) : super(key: key);
 
   @override
   State<BiodataPage> createState() => _BiodataPageState();
@@ -203,11 +205,25 @@ class _BiodataPageState extends State<BiodataPage> {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => const HomePage(),
-                    ),
-                  );
+                  if (!isChecked) {
+                    // Show a hint (Snackbar in this case)
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content:
+                            Text('Please agree to the terms and conditions.'),
+                      ),
+                    );
+                    return;
+                  }
+
+                  // Retrieve email, password, and name
+                  String email = widget.email;
+                  String password = passController.text;
+                  String nama = namaLengkapController.text;
+
+                  // Call Auth.register
+                  Auth.register(email: email, password: password, nama: nama)
+                      .then((user) {});
                 },
                 child: const Text(
                   'Daftar',
