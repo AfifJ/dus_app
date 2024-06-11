@@ -1,4 +1,5 @@
 import 'package:dus_app/config/constant.dart';
+import 'package:dus_app/firebase/auth.dart';
 import 'package:dus_app/views/auth/register.dart';
 import 'package:dus_app/views/home/home.dart';
 import 'package:flutter/material.dart';
@@ -122,11 +123,16 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => const HomePage(),
-                    ),
-                  );
+                  Auth.login(
+                          email: emailController.text,
+                          password: passController.text)
+                      .then((user) {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const HomePage(),
+                      ),
+                    );
+                  });
                 },
                 child: const Text(
                   'Masuk',
