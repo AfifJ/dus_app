@@ -223,7 +223,10 @@ class _BiodataPageState extends State<BiodataPage> {
 
                   // Call Auth.register
                   Auth.register(email: email, password: password, nama: nama)
-                      .then((user) {});
+                      .then((user) {
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => HomePage()));
+                  });
                 },
                 child: const Text(
                   'Daftar',
