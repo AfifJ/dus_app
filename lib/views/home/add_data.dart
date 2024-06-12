@@ -1,5 +1,6 @@
 import 'package:dus_app/config/constant.dart';
 import 'package:dus_app/views/home/add_type.dart';
+import 'package:dus_app/views/home/edit_loc.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -201,7 +202,7 @@ class _AddDataPageState extends State<AddDataPage> {
               children: [
                 Row(
                   children: [
-                    Image.asset('images/icon/pin_loc_filled.png'),
+                    Image.asset('images/icon/pin_loc.png'),
                     const SizedBox(
                       width: 15,
                     ),
@@ -215,7 +216,13 @@ class _AddDataPageState extends State<AddDataPage> {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const EditLocPage(),
+                          ),
+                        );
+                      },
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.all(8),
                       ),

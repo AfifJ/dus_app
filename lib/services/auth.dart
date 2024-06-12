@@ -2,19 +2,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Auth {
-  static Future<User?> register(
-      {required String email,
-      required String password,
-      required String nama}) async {
+  static Future<User?> register({
+    required String email,
+    required String password,
+    required String nama,
+  }) async {
     User? user;
     try {
       user = (await FirebaseAuth.instance
               .createUserWithEmailAndPassword(email: email, password: password))
           .user;
       if (user != null) {
-        CollectionReference users_col =
+        CollectionReference usersCol =
             FirebaseFirestore.instance.collection('users');
-        users_col.doc(user.uid).set({'email': email, 'nama': nama});
+        usersCol.doc(user.uid).set({'email': email, 'nama': nama});
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {

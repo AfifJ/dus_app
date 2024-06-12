@@ -1,11 +1,11 @@
 import 'package:dus_app/config/constant.dart';
 import 'package:dus_app/views/home/home.dart';
 import 'package:flutter/material.dart';
-import '../../firebase/auth.dart';
+import '../../services/auth.dart';
 
 class BiodataPage extends StatefulWidget {
   final String email;
-  const BiodataPage({Key? key, required this.email}) : super(key: key);
+  const BiodataPage({super.key, required this.email});
 
   @override
   State<BiodataPage> createState() => _BiodataPageState();
@@ -225,7 +225,7 @@ class _BiodataPageState extends State<BiodataPage> {
                   Auth.register(email: email, password: password, nama: nama)
                       .then((user) {
                     Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => HomePage()));
+                        MaterialPageRoute(builder: (context) => const HomePage(),),);
                   });
                 },
                 child: const Text(

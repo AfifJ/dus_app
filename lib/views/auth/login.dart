@@ -1,5 +1,5 @@
 import 'package:dus_app/config/constant.dart';
-import 'package:dus_app/firebase/auth.dart';
+import 'package:dus_app/services/auth.dart';
 import 'package:dus_app/views/auth/register.dart';
 import 'package:dus_app/views/home/home.dart';
 import 'package:flutter/material.dart';

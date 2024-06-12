@@ -1,3 +1,4 @@
+import 'package:dus_app/config/constant.dart';
 import 'package:dus_app/views/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,15 +16,21 @@ class SplashPage extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.active) {
           User? user = snapshot.data;
           if (user == null) {
-            return AuthPage();
+            return const AuthPage();
           } else {
-            return HomePage();
+            return const HomePage();
           }
         } else {
           // Show a loading spinner while checking auth state
-          return const Scaffold(
+          return Scaffold(
+            backgroundColor: Constant.colorBgWhite,
             body: Center(
-              child: CircularProgressIndicator(),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Image.asset(
+                  'images/logo/logo_green.png',
+                ),
+              ),
             ),
           );
         }
