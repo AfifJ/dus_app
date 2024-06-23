@@ -1,5 +1,6 @@
 import 'package:dus_app/config/constant.dart';
-import 'package:dus_app/views/home/add_data.dart';
+import 'package:dus_app/views/process/add_data.dart';
+import 'package:dus_app/views/profile/profile.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,7 +14,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Constant.colorBgWhite,
+      backgroundColor: Constant.colorLightWhite,
       appBar: AppBar(
         leading: Builder(
           builder: (context) {
@@ -36,16 +37,18 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(
-              Icons.drafts,
-              size: 24,
+            icon: Image.asset(
+              '${Constant.iconPath}/draft.png',
+              width: 24,
+              height: 24,
             ),
           ),
           IconButton(
             onPressed: () {},
-            icon: const Icon(
-              Icons.notifications,
-              size: 24,
+            icon: Image.asset(
+              '${Constant.iconPath}/notification.png',
+              width: 24,
+              height: 24,
             ),
           ),
         ],
@@ -69,10 +72,18 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding: const EdgeInsets.only(bottom: 12),
               child: ListTile(
-                onTap: () {},
-                leading: const Icon(
-                  Icons.person_rounded,
-                  size: 52,
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const ProfilePage(),
+                    ),
+                  );
+                },
+                leading: Image.asset(
+                  '${Constant.iconPath}/person.png',
+                  width: 52,
+                  height: 52,
                 ),
                 title: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,37 +110,46 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             ListTile(
-              leading: const Icon(
-                Icons.person_2,
-                size: 24,
+              leading: Image.asset(
+                '${Constant.iconPath}/person.png',
+                width: 24,
+                height: 24,
               ),
               title: const Text(
                 'Pengaturan Akun',
                 style: TextStyle(fontSize: 16),
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pop();
+              },
             ),
             ListTile(
-              leading: const Icon(
-                Icons.pin_drop_outlined,
-                size: 24,
+              leading: Image.asset(
+                '${Constant.iconPath}/pin_loc.png',
+                width: 24,
+                height: 24,
               ),
               title: const Text(
                 'Alamat Saya',
                 style: TextStyle(fontSize: 16),
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pop();
+              },
             ),
             ListTile(
-              leading: const Icon(
-                Icons.question_mark,
-                size: 24,
+              leading: Image.asset(
+                '${Constant.iconPath}/question.png',
+                width: 24,
+                height: 24,
               ),
               title: const Text(
                 'Dapatkan Bantuan',
                 style: TextStyle(fontSize: 16),
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pop();
+              },
             ),
           ],
         ),
@@ -142,7 +162,7 @@ class _HomePageState extends State<HomePage> {
             ),
           );
         },
-        backgroundColor: Constant.colorAccentYellow,
+        backgroundColor: Constant.colorKuningAccent,
         child: const Icon(
           Icons.add,
           size: 45,
@@ -159,31 +179,19 @@ class _HomePageState extends State<HomePage> {
               color: Constant.colorIjoLumut,
               borderRadius: BorderRadius.circular(16),
             ),
-            child: const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Column(
               children: [
-                Text(
-                  'Hello, Admin',
-                  style: TextStyle(
-                    color: Constant.colorWhite,
-                    fontSize: 16,
-                    fontWeight: Constant.fontSemiBold,
-                  ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Text(
+                const Text(
                   'Saldo Anda',
                   style: TextStyle(
                     color: Constant.colorWhite,
-                    fontSize: 14,
+                    fontSize: 12,
                   ),
                 ),
-                SizedBox(
-                  height: 5,
+                const SizedBox(
+                  height: 10,
                 ),
-                Text(
+                const Text(
                   'Rp. 50.000,-',
                   style: TextStyle(
                     color: Constant.colorWhite,
@@ -191,42 +199,66 @@ class _HomePageState extends State<HomePage> {
                     fontWeight: Constant.fontBold,
                   ),
                 ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    InkWell(
+                      onTap: () {},
+                      child: Ink(
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              '${Constant.iconPath}/top_up.png',
+                              width: 36,
+                              height: 36,
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            const Text(
+                              'Top Up',
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Constant.colorWhite,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {},
+                      child: Ink(
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              '${Constant.iconPath}/tarik_tunai.png',
+                              width: 36,
+                              height: 36,
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            const Text(
+                              'Tarik Tunai',
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Constant.colorWhite,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),
-          // const SizedBox(
-          //   height: 30,
-          // ),
-          // const Text(
-          //   'DRAFT',
-          //   style: TextStyle(
-          //     fontSize: 16,
-          //     fontWeight: Constant.fontBold,
-          //   ),
-          // ),
-          // const SizedBox(
-          //   height: 10,
-          // ),
-          // Container(
-          //   constraints: const BoxConstraints(
-          //     maxHeight: 200,
-          //   ),
-          //   child: SingleChildScrollView(
-          //     scrollDirection: Axis.horizontal,
-          //     child: Wrap(
-          //       spacing: 15,
-          //       crossAxisAlignment: WrapCrossAlignment.center,
-          //       children: [
-          //         _addListButton(),
-          //         _itemDataDraft(name: 'Draft 1', updatedDate: '12-09-2024'),
-          //         _itemDataDraft(name: 'Draft 2', updatedDate: '12-09-2024'),
-          //         _itemDataDraft(name: 'Draft 3', updatedDate: '12-09-2024'),
-          //         _itemDataDraft(name: 'Draft 4', updatedDate: '12-09-2024'),
-          //         _itemDataDraft(name: 'Draft 5', updatedDate: '12-09-2024'),
-          //       ],
-          //     ),
-          //   ),
-          // ),
           const SizedBox(
             height: 30,
           ),
@@ -250,115 +282,6 @@ class _HomePageState extends State<HomePage> {
             ],
           )
         ],
-      ),
-    );
-  }
-
-  Widget _addListButton() {
-    return InkWell(
-      borderRadius: BorderRadius.circular(8),
-      onTap: () {},
-      child: Ink(
-        padding: const EdgeInsets.all(5),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8), border: Border.all()),
-        child: const Column(
-          children: [
-            Icon(
-              Icons.add,
-              size: 50,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              'Tambah Data',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: Constant.fontBold,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _itemDataDraft({required String name, required String updatedDate}) {
-    return InkWell(
-      onTap: () {},
-      borderRadius: BorderRadius.circular(12),
-      child: Ink(
-        decoration: BoxDecoration(
-          color: Constant.colorWhite,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black45,
-              blurRadius: 3,
-              offset: Offset(2, 2),
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Container(
-              height: 150,
-              width: 150,
-              decoration: const BoxDecoration(
-                color: Constant.colorGrey,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(12),
-                  topRight: Radius.circular(12),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Container(
-              width: 150,
-              padding: const EdgeInsets.all(5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: 100,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          name,
-                          style: const TextStyle(
-                            fontWeight: Constant.fontBold,
-                            fontSize: 14,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          updatedDate,
-                          style: const TextStyle(
-                            fontWeight: Constant.fontMedium,
-                            fontSize: 10,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.delete,
-                      color: Colors.red,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

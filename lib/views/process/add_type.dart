@@ -12,19 +12,19 @@ class AddTypePage extends StatefulWidget {
 class _AddTypePageState extends State<AddTypePage> {
   List<ItemTypeModel> dataType = [
     ItemTypeModel(
-      img: 'images/icon/plastic.png',
+      img: '${Constant.iconPath}/plastic.png',
       title: 'Plastik',
       example: 'Contoh: Kresek',
       price: '1000',
     ),
     ItemTypeModel(
-      img: 'images/icon/paper.png',
+      img: '${Constant.iconPath}/paper.png',
       title: 'Kertas',
       example: 'Contoh: Buku, koran, kardus',
       price: '1000',
     ),
     ItemTypeModel(
-      img: 'images/icon/bottle.png',
+      img: '${Constant.iconPath}/bottle.png',
       title: 'Botol',
       example: 'Contoh: Botol Mineral',
       price: '5000',
@@ -36,7 +36,7 @@ class _AddTypePageState extends State<AddTypePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Constant.colorBgWhite,
+      backgroundColor: Constant.colorLightWhite,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
@@ -140,7 +140,7 @@ class _AddTypePageState extends State<AddTypePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image.asset(
-                'images/icon/information.png',
+                '${Constant.iconPath}/information.png',
               ),
               const SizedBox(
                 width: 10,
@@ -169,7 +169,7 @@ class _AddTypePageState extends State<AddTypePage> {
               horizontal: 24,
               vertical: 20,
             ),
-            backgroundColor: Constant.colorButton,
+            backgroundColor: Constant.colorDarkPrimary,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),

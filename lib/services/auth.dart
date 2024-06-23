@@ -18,15 +18,15 @@ class Auth {
         usersCol.doc(user.uid).set({'email': email, 'nama': nama});
       }
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'email-already-in-use') {
-        print("Email sudah dipakai");
-      }
+      print(e.code);
     }
     return user;
   }
 
-  static Future<User?> login(
-      {required String email, required String password}) async {
+  static Future<User?> login({
+    required String email,
+    required String password,
+  }) async {
     User? user;
 
     try {

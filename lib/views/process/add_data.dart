@@ -1,6 +1,7 @@
 import 'package:dus_app/config/constant.dart';
-import 'package:dus_app/views/home/add_type.dart';
-import 'package:dus_app/views/home/edit_loc.dart';
+import 'package:dus_app/views/process/add_type.dart';
+import 'package:dus_app/views/process/edit_loc.dart';
+import 'package:dus_app/views/process/finish_order.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -17,7 +18,7 @@ class _AddDataPageState extends State<AddDataPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Constant.colorBgWhite,
+      backgroundColor: Constant.colorLightWhite,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
@@ -48,7 +49,7 @@ class _AddDataPageState extends State<AddDataPage> {
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: Constant.fontBold,
-                  color: Constant.colorSuccess,
+                  color: Constant.colorSukses,
                 ),
               ),
             ),
@@ -71,7 +72,7 @@ class _AddDataPageState extends State<AddDataPage> {
             child: Row(
               children: [
                 Image.asset(
-                  'images/icon/upload.png',
+                  '${Constant.iconPath}/upload.png',
                 ),
                 const SizedBox(
                   width: 10,
@@ -115,7 +116,7 @@ class _AddDataPageState extends State<AddDataPage> {
               children: [
                 Row(
                   children: [
-                    Image.asset('images/icon/trash.png'),
+                    Image.asset('${Constant.iconPath}/trash.png'),
                     const SizedBox(
                       width: 15,
                     ),
@@ -144,7 +145,7 @@ class _AddDataPageState extends State<AddDataPage> {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: Constant.fontBold,
-                          color: Constant.colorSuccess,
+                          color: Constant.colorSukses,
                         ),
                       ),
                     ),
@@ -157,25 +158,25 @@ class _AddDataPageState extends State<AddDataPage> {
                   runSpacing: 15,
                   children: [
                     _cardItem(
-                      iconName: 'images/icon/paper.png',
+                      iconName: '${Constant.iconPath}/paper.png',
                       title: 'Kertas',
                       qty: '5',
                       price: '20.000',
                     ),
                     _cardItem(
-                      iconName: 'images/icon/bottle.png',
+                      iconName: '${Constant.iconPath}/bottle.png',
                       title: 'Botol',
                       qty: '2',
                       price: '5.000',
                     ),
                     _cardItem(
-                      iconName: 'images/icon/paper.png',
+                      iconName: '${Constant.iconPath}/paper.png',
                       title: 'Kertas',
                       qty: '5',
                       price: '20.000',
                     ),
                     _cardItem(
-                      iconName: 'images/icon/paper.png',
+                      iconName: '${Constant.iconPath}/paper.png',
                       title: 'Kertas',
                       qty: '5',
                       price: '20.000',
@@ -202,7 +203,7 @@ class _AddDataPageState extends State<AddDataPage> {
               children: [
                 Row(
                   children: [
-                    Image.asset('images/icon/pin_loc.png'),
+                    Image.asset('${Constant.iconPath}/pin_loc.png'),
                     const SizedBox(
                       width: 15,
                     ),
@@ -231,7 +232,7 @@ class _AddDataPageState extends State<AddDataPage> {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: Constant.fontBold,
-                          color: Constant.colorSuccess,
+                          color: Constant.colorSukses,
                         ),
                       ),
                     ),
@@ -279,7 +280,7 @@ class _AddDataPageState extends State<AddDataPage> {
               children: [
                 Row(
                   children: [
-                    Image.asset('images/icon/calendar.png'),
+                    Image.asset('${Constant.iconPath}/calendar.png'),
                     const SizedBox(
                       width: 15,
                     ),
@@ -297,15 +298,20 @@ class _AddDataPageState extends State<AddDataPage> {
                         DateTime? pickedDate = await showDatePicker(
                           context: context,
                           initialDate: DateTime.now(),
-                          firstDate: DateTime(DateTime.now().year - 100),
-                          lastDate: DateTime.now(),
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(DateTime.now().year + 1),
                         );
                         if (pickedDate != null) {
-                          String formattedDate =
-                              DateFormat('dd MMMM yyyy').format(pickedDate);
-                          setState(() {
-                            _pickUpDate = formattedDate;
-                          });
+                          String formattedDate = DateFormat(
+                            'dd MMMM yyyy',
+                          ).format(
+                            pickedDate,
+                          );
+                          setState(
+                            () {
+                              _pickUpDate = formattedDate;
+                            },
+                          );
                         }
                       },
                       style: TextButton.styleFrom(
@@ -316,7 +322,7 @@ class _AddDataPageState extends State<AddDataPage> {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: Constant.fontBold,
-                          color: Constant.colorSuccess,
+                          color: Constant.colorSukses,
                         ),
                       ),
                     ),
@@ -379,9 +385,15 @@ class _AddDataPageState extends State<AddDataPage> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => const FinishOrder(),
+                    ),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Constant.colorButton,
+                  backgroundColor: Constant.colorDarkPrimary,
                   padding: const EdgeInsets.symmetric(
                     vertical: 20,
                     horizontal: 24,
@@ -447,7 +459,7 @@ class _AddDataPageState extends State<AddDataPage> {
                   GestureDetector(
                     onTap: () {},
                     child: Image.asset(
-                      'images/icon/decrement.png',
+                      '${Constant.iconPath}/decrement.png',
                     ),
                   ),
                   const SizedBox(
@@ -465,7 +477,7 @@ class _AddDataPageState extends State<AddDataPage> {
                   GestureDetector(
                     onTap: () {},
                     child: Image.asset(
-                      'images/icon/increment.png',
+                      '${Constant.iconPath}/increment.png',
                     ),
                   ),
                   const SizedBox(

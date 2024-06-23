@@ -2,10 +2,15 @@ import 'package:dus_app/config/constant.dart';
 import 'package:dus_app/views/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:dus_app/views/auth/auth.dart';
 
-class SplashPage extends StatelessWidget {
+class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
+
+  @override
+  State<SplashPage> createState() => _SplashPageState();
+}
+
+class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
@@ -16,14 +21,14 @@ class SplashPage extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.active) {
           User? user = snapshot.data;
           if (user == null) {
-            return const AuthPage();
+            return const HomePage();
           } else {
             return const HomePage();
           }
         } else {
           // Show a loading spinner while checking auth state
           return Scaffold(
-            backgroundColor: Constant.colorBgWhite,
+            backgroundColor: Constant.colorLightWhite,
             body: Center(
               child: Padding(
                 padding: const EdgeInsets.all(20),

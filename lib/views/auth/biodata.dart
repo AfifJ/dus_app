@@ -195,7 +195,7 @@ class _BiodataPageState extends State<BiodataPage> {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Constant.colorButton,
+                  backgroundColor: Constant.colorDarkPrimary,
                   padding: const EdgeInsets.symmetric(
                     vertical: 20,
                     horizontal: 24,

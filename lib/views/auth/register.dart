@@ -42,7 +42,7 @@ class _RegisterPageState extends State<RegisterPage> {
               'Silahkan daftar dengan akun anda',
               style: TextStyle(
                 fontSize: 16,
-                color: Constant.colorButton,
+                color: Constant.colorDarkPrimary,
               ),
               textAlign: TextAlign.center,
             ),
@@ -75,7 +75,7 @@ class _RegisterPageState extends State<RegisterPage> {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Constant.colorButton,
+                  backgroundColor: Constant.colorDarkPrimary,
                   padding: const EdgeInsets.symmetric(
                     vertical: 20,
                     horizontal: 24,

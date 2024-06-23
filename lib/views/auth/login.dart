@@ -45,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
               'Silahkan masuk dengan akun anda yang sudah terdaftar',
               style: TextStyle(
                 fontSize: 16,
-                color: Constant.colorButton,
+                color: Constant.colorDarkPrimary,
               ),
               textAlign: TextAlign.center,
             ),
@@ -113,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Constant.colorButton,
+                  backgroundColor: Constant.colorDarkPrimary,
                   padding: const EdgeInsets.symmetric(
                     vertical: 20,
                     horizontal: 24,

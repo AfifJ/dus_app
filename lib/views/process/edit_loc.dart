@@ -22,7 +22,7 @@ class _EditLocPageState extends State<EditLocPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Constant.colorBgWhite,
+      backgroundColor: Constant.colorLightWhite,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
@@ -62,7 +62,7 @@ class _EditLocPageState extends State<EditLocPage> {
                 Row(
                   children: [
                     Image.asset(
-                      'images/icon/person.png',
+                      '${Constant.iconPath}/person.png',
                     ),
                     const SizedBox(
                       width: 10,
@@ -132,7 +132,7 @@ class _EditLocPageState extends State<EditLocPage> {
                 Row(
                   children: [
                     Image.asset(
-                      'images/icon/pin_loc.png',
+                      '${Constant.iconPath}/pin_loc.png',
                     ),
                     const SizedBox(
                       width: 10,
@@ -351,7 +351,7 @@ class _EditLocPageState extends State<EditLocPage> {
               horizontal: 24,
               vertical: 20,
             ),
-            backgroundColor: Constant.colorButton,
+            backgroundColor: Constant.colorDarkPrimary,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
