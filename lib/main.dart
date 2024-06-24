@@ -1,5 +1,4 @@
 import 'package:dus_app/firebase_options.dart';
-import 'package:dus_app/views/maps/map.dart';
 import 'package:dus_app/views/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,8 +26,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      // home: SplashPage(),
-      home: MapPage(),
+      home: SplashPage(),
     );
   }
 }

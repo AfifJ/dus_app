@@ -1,5 +1,9 @@
 import 'package:dus_app/config/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:latlong2/latlong.dart';
 
 class EditLocPage extends StatefulWidget {
   const EditLocPage({super.key});
@@ -9,7 +13,6 @@ class EditLocPage extends StatefulWidget {
 }
 
 class _EditLocPageState extends State<EditLocPage> {
-
   TextEditingController provinsiController = TextEditingController();
   TextEditingController kotaController = TextEditingController();
   TextEditingController kecamatanController = TextEditingController();
@@ -18,6 +21,22 @@ class _EditLocPageState extends State<EditLocPage> {
   TextEditingController rwController = TextEditingController();
   TextEditingController rtController = TextEditingController();
   TextEditingController detailController = TextEditingController();
+  final MapController _mapController = MapController();
+
+  LatLng _center = const LatLng(-6.200000, 106.816666); // Default to Jakarta
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+    _mapController.mapEventStream.listen((event) {
+      if (event is MapEventMoveEnd) {
+        setState(() {
+          _center = _mapController.camera.center;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -330,9 +349,83 @@ class _EditLocPageState extends State<EditLocPage> {
                   height: 20,
                 ),
                 Container(
-                  color: Constant.colorGrey,
                   constraints: BoxConstraints(
                     maxHeight: MediaQuery.of(context).size.height / 3,
+                  ),
+                  child: Stack(
+                    children: [
+                      FlutterMap(
+                        mapController: _mapController,
+                        options: MapOptions(
+                          initialCenter: _center,
+                          initialZoom: 13.0,
+                        ),
+                        children: [
+                          TileLayer(
+                            urlTemplate:
+                                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                            userAgentPackageName:
+                                'com.example.dus_app', // Replace with your app's package name
+                            tileProvider: CancellableNetworkTileProvider(),
+                          ),
+                          MarkerLayer(
+                            markers: [
+                              Marker(
+                                width: 80.0,
+                                height: 80.0,
+                                point: _center,
+                                child: const Icon(
+                                  Icons.location_pin,
+                                  color: Colors.transparent,
+                                  size: 50,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          color: Constant.colorBlack.withOpacity(0.45),
+                          padding: const EdgeInsets.all(8),
+                          child: Text(
+                            'Longitude: ${_center.longitude.toStringAsFixed(6)}, Latitude: ${_center.latitude.toStringAsFixed(6)}',
+                            style: const TextStyle(color: Constant.colorWhite),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 16,
+                        right: 16,
+                        child: FloatingActionButton(
+                          backgroundColor: Constant.colorDarkPrimary,
+                          onPressed: () {
+                            const snackBar = SnackBar(
+                              content: Text(
+                                'Lokasi berhasil di update.',
+                              ),
+                            );
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          },
+                          child: const Icon(
+                            Icons.check,
+                            color: Constant.colorWhite,
+                          ),
+                        ),
+                      ),
+                      const Align(
+                        child: Icon(
+                          Icons.location_pin,
+                          color: Colors.red,
+                          size: 50,
+                        ),
+                      ),
+                    ],
                   ),
                 )
               ],
@@ -367,5 +460,34 @@ class _EditLocPageState extends State<EditLocPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _getCurrentLocation() async {
+    try {
+      final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        return;
+      }
+
+      var permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          return;
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        return;
+      }
+
+      final position = await Geolocator.getCurrentPosition();
+      setState(() {
+        _center = LatLng(position.latitude, position.longitude);
+      });
+      _mapController.move(_center, 20);
+    } catch (e) {
+      e.toString();
+    }
   }
 }
