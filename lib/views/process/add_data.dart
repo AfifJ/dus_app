@@ -3,6 +3,7 @@ import 'package:dus_app/views/process/add_type.dart';
 import 'package:dus_app/views/process/edit_loc.dart';
 import 'package:dus_app/views/process/finish_order.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class AddDataPage extends StatefulWidget {
@@ -60,44 +61,48 @@ class _AddDataPageState extends State<AddDataPage> {
         shrinkWrap: true,
         padding: const EdgeInsets.all(20),
         children: [
-          Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Constant.colorWhite,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: Constant.colorBlack.withOpacity(0.2),
+          InkWell(
+            onTap: () => _dialogBuilder(context),
+            borderRadius: BorderRadius.circular(16),
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Constant.colorWhite,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: Constant.colorBlack.withOpacity(0.2),
+                ),
               ),
-            ),
-            child: Row(
-              children: [
-                Image.asset(
-                  '${Constant.iconPath}/upload.png',
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                const Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Upload Gambar',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: Constant.fontBold,
-                        ),
-                      ),
-                      Text(
-                        'Gambar keseluruhan dari sampah',
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
+              child: Row(
+                children: [
+                  Image.asset(
+                    '${Constant.iconPath}/upload.png',
                   ),
-                ),
-              ],
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Upload Gambar',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: Constant.fontBold,
+                          ),
+                        ),
+                        Text(
+                          'Gambar keseluruhan dari sampah',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           const SizedBox(
@@ -160,25 +165,25 @@ class _AddDataPageState extends State<AddDataPage> {
                     _cardItem(
                       iconName: '${Constant.iconPath}/paper.png',
                       title: 'Kertas',
-                      qty: '5',
+                      qty: 5,
                       price: '20.000',
                     ),
                     _cardItem(
                       iconName: '${Constant.iconPath}/bottle.png',
                       title: 'Botol',
-                      qty: '2',
+                      qty: 2,
                       price: '5.000',
                     ),
                     _cardItem(
                       iconName: '${Constant.iconPath}/paper.png',
                       title: 'Kertas',
-                      qty: '5',
+                      qty: 5,
                       price: '20.000',
                     ),
                     _cardItem(
                       iconName: '${Constant.iconPath}/paper.png',
                       title: 'Kertas',
-                      qty: '5',
+                      qty: 5,
                       price: '20.000',
                     ),
                   ],
@@ -421,7 +426,7 @@ class _AddDataPageState extends State<AddDataPage> {
   Widget _cardItem({
     required String iconName,
     required String title,
-    required String qty,
+    required double qty,
     required String price,
   }) {
     return Row(
@@ -457,7 +462,13 @@ class _AddDataPageState extends State<AddDataPage> {
               Row(
                 children: [
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      setState(
+                        () {
+                          qty--;
+                        },
+                      );
+                    },
                     child: Image.asset(
                       '${Constant.iconPath}/decrement.png',
                     ),
@@ -466,7 +477,7 @@ class _AddDataPageState extends State<AddDataPage> {
                     width: 12,
                   ),
                   Text(
-                    qty,
+                    '$qty',
                     style: const TextStyle(
                       fontSize: 14,
                     ),
@@ -475,7 +486,13 @@ class _AddDataPageState extends State<AddDataPage> {
                     width: 12,
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      setState(
+                        () {
+                          qty++;
+                        },
+                      );
+                    },
                     child: Image.asset(
                       '${Constant.iconPath}/increment.png',
                     ),
@@ -503,5 +520,98 @@ class _AddDataPageState extends State<AddDataPage> {
         ),
       ],
     );
+  }
+
+  Future<void> _dialogBuilder(BuildContext context) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Pilih Foto'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                    await _pickImage(0);
+                  },
+                  child: const Row(
+                    children: [
+                      Icon(
+                        Icons.camera_alt,
+                        size: 24,
+                      ),
+                      Expanded(
+                        child: Text(
+                          'Kamera',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                    await _pickImage(0);
+                  },
+                  child: const Row(
+                    children: [
+                      Icon(
+                        Icons.folder,
+                        size: 24,
+                      ),
+                      Expanded(
+                        child: Text(
+                          'Galeri',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Batal'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future _pickImage(int code) async {
+    try {
+      final image = await ImagePicker().pickImage(
+        source: code == 0 ? ImageSource.camera : ImageSource.gallery,
+      );
+      if (image == null) {
+        return;
+      }
+    } catch (e) {
+      e.toString();
+    }
   }
 }

@@ -124,9 +124,9 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 onPressed: () {
                   Auth.login(
-                          email: emailController.text,
-                          password: passController.text)
-                      .then((user) {
+                    email: emailController.text,
+                    password: passController.text,
+                  ).then((user) {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) => const HomePage(),

@@ -1,4 +1,5 @@
 import 'package:dus_app/config/constant.dart';
+import 'package:dus_app/services/transaction.dart';
 import 'package:dus_app/views/home/draft.dart';
 import 'package:dus_app/views/home/notif.dart';
 import 'package:dus_app/views/process/add_data.dart';
@@ -169,7 +170,8 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async{
+          Transaction.addData();
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => const AddDataPage(),
