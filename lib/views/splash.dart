@@ -1,4 +1,5 @@
 import 'package:dus_app/config/constant.dart';
+import 'package:dus_app/views/auth/auth.dart';
 import 'package:dus_app/views/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,7 +21,7 @@ class _SplashPageState extends State<SplashPage> {
         if (snapshot.connectionState == ConnectionState.active) {
           User? user = snapshot.data;
           if (user == null) {
-            return const HomePage();
+            return const AuthPage();
           } else {
             return const HomePage();
           }

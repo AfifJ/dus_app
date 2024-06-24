@@ -9,8 +9,10 @@ class Auth {
   }) async {
     User? user;
     try {
-      user = (await FirebaseAuth.instance
-              .createUserWithEmailAndPassword(email: email, password: password))
+      user = (await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      ))
           .user;
       if (user != null) {
         CollectionReference usersCol =
@@ -30,8 +32,10 @@ class Auth {
     User? user;
 
     try {
-      user = (await FirebaseAuth.instance
-              .signInWithEmailAndPassword(email: email, password: password))
+      user = (await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      ))
           .user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
