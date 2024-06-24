@@ -1,5 +1,4 @@
 import 'package:dus_app/config/constant.dart';
-import 'package:dus_app/views/auth/auth.dart';
 import 'package:dus_app/views/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,7 +11,6 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(

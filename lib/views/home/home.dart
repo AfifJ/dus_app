@@ -1,4 +1,6 @@
 import 'package:dus_app/config/constant.dart';
+import 'package:dus_app/views/home/draft.dart';
+import 'package:dus_app/views/home/notif.dart';
 import 'package:dus_app/views/process/add_data.dart';
 import 'package:dus_app/views/profile/profile.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +38,13 @@ class _HomePageState extends State<HomePage> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const DraftPage(),
+                ),
+              );
+            },
             icon: Image.asset(
               '${Constant.iconPath}/draft.png',
               width: 24,
@@ -44,7 +52,13 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const NotifPage(),
+                ),
+              );
+            },
             icon: Image.asset(
               '${Constant.iconPath}/notification.png',
               width: 24,
@@ -286,10 +300,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _itemHistory(
-      {required BuildContext context,
-      required String name,
-      required String status}) {
+  Widget _itemHistory({
+    required BuildContext context,
+    required String name,
+    required String status,
+  }) {
     return InkWell(
       onTap: () {},
       borderRadius: BorderRadius.circular(12),
@@ -308,58 +323,61 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             SizedBox(
-              width: MediaQuery.of(context).size.width * 0.9,
+              width: MediaQuery.of(context).size.width - 20,
               height: 82,
               child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                width: 82,
-                height: 82,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFB6B6B6),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                ),
-                SizedBox(width: 16),
-                Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                  Text(
-                    name,
-                    maxLines: 2,
-                    style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: 82,
+                    height: 82,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFB6B6B6),
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(height: 12),
-                  Text(
-                    status,
-                    style: const TextStyle(
-                    color: Color(0xFF7D7F1D),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          name,
+                          maxLines: 2,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          status,
+                          style: const TextStyle(
+                            color: Color(0xFF7D7F1D),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
                     ),
-                    overflow: TextOverflow.ellipsis,
                   ),
-                  ],
-                ),
-                ),
-                const Text(
-                'Rp5.000',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w400,
-                ),
-                ),
-              ],
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'Rp5.000',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

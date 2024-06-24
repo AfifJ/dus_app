@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:dus_app/config/constant.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,8 @@ class ProfilePage extends StatelessWidget {
         leading: IconButton(
           onPressed: () => Navigator.of(context).pop(),
           icon: const Icon(
-            Icons.arrow_back,
+            Icons.keyboard_arrow_left,
+            size: 24,
             color: Constant.colorBlack,
           ),
         ),
@@ -35,7 +36,7 @@ class ProfileBody extends StatefulWidget {
   const ProfileBody({super.key});
 
   @override
-  _ProfileBodyState createState() => _ProfileBodyState();
+  State<ProfileBody> createState() => _ProfileBodyState();
 }
 
 class _ProfileBodyState extends State<ProfileBody> {
@@ -72,34 +73,54 @@ class _ProfileBodyState extends State<ProfileBody> {
             _buildProfileImage(),
             const SizedBox(height: 32),
             _buildInfoSection(
-                'Nama Lengkap', name, isEditingName, _nameController, (value) {
-              setState(() {
-                isEditingName = value;
-                if (!value) _nameController.text = name;
-              });
-            }, () {
-              if (_formKey.currentState!.validate()) {
-                setState(() {
-                  name = _nameController.text;
-                  isEditingName = false;
-                });
-              }
-            }),
+              title: 'Nama Lengkap',
+              value: name,
+              isEditing: isEditingName,
+              controller: _nameController,
+              onEdit: (value) {
+                setState(
+                  () {
+                    isEditingName = value;
+                    if (!value) _nameController.text = name;
+                  },
+                );
+              },
+              onSave: () {
+                if (_formKey.currentState!.validate()) {
+                  setState(
+                    () {
+                      name = _nameController.text;
+                      isEditingName = false;
+                    },
+                  );
+                }
+              },
+            ),
             const SizedBox(height: 32),
-            _buildInfoSection('Email', email, isEditingEmail, _emailController,
-                (value) {
-              setState(() {
-                isEditingEmail = value;
-                if (!value) _emailController.text = email;
-              });
-            }, () {
-              if (_formKey.currentState!.validate()) {
-                setState(() {
-                  email = _emailController.text;
-                  isEditingEmail = false;
-                });
-              }
-            }),
+            _buildInfoSection(
+              title: 'Email',
+              value: email,
+              isEditing: isEditingEmail,
+              controller: _emailController,
+              onEdit: (value) {
+                setState(
+                  () {
+                    isEditingEmail = value;
+                    if (!value) _emailController.text = email;
+                  },
+                );
+              },
+              onSave: () {
+                if (_formKey.currentState!.validate()) {
+                  setState(
+                    () {
+                      email = _emailController.text;
+                      isEditingEmail = false;
+                    },
+                  );
+                }
+              },
+            ),
             const SizedBox(height: 32),
             _updatePassBtn(context),
           ],
@@ -113,8 +134,8 @@ class _ProfileBodyState extends State<ProfileBody> {
       alignment: Alignment.center,
       children: [
         Container(
-          width: 169,
-          height: 169,
+          width: 170,
+          height: 170,
           decoration: const BoxDecoration(
             color: Color(0x66193E26),
             shape: BoxShape.circle,
@@ -149,13 +170,14 @@ class _ProfileBodyState extends State<ProfileBody> {
     );
   }
 
-  Widget _buildInfoSection(
-      String title,
-      String value,
-      bool isEditing,
-      TextEditingController controller,
-      Function(bool) onEdit,
-      VoidCallback onSave) {
+  Widget _buildInfoSection({
+    required String title,
+    required String value,
+    required bool isEditing,
+    required TextEditingController controller,
+    required Function(bool) onEdit,
+    required VoidCallback onSave,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -175,11 +197,15 @@ class _ProfileBodyState extends State<ProfileBody> {
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: const BorderSide(color: Color(0xFFBC0000)),
+                  borderSide: const BorderSide(
+                    color: Color(0xFFBC0000),
+                  ),
                 ),
                 errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: const BorderSide(color: Color(0xFFBC0000)),
+                  borderSide: const BorderSide(
+                    color: Color(0xFFBC0000),
+                  ),
                 ),
               ),
               validator: (value) {
@@ -226,7 +252,9 @@ class _ProfileBodyState extends State<ProfileBody> {
                         foregroundColor: const Color(0xFF193E26),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
-                          side: const BorderSide(color: Color(0xFF193E26)),
+                          side: const BorderSide(
+                            color: Color(0xFF193E26),
+                          ),
                         ),
                       ),
                       child: const Text('Batal'),
