@@ -295,72 +295,73 @@ class _HomePageState extends State<HomePage> {
       borderRadius: BorderRadius.circular(12),
       child: Ink(
         decoration: BoxDecoration(
-          color: Constant.colorWhite,
+          // color: Constant.colorWhite,
           borderRadius: BorderRadius.circular(12),
-          boxShadow: const [
+          /* boxShadow: const [
             BoxShadow(
               color: Colors.black45,
               blurRadius: 3,
               offset: Offset(2, 2),
             ),
-          ],
+          ], */
         ),
-        child: Row(
+        child: Column(
           children: [
-            Container(
-              decoration: const BoxDecoration(
-                color: Constant.colorGrey,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(12),
-                  bottomLeft: Radius.circular(12),
-                ),
-              ),
-              width: 100,
-              height: 100,
-            ),
-            const SizedBox(
-              width: 15,
-            ),
             SizedBox(
-              width: MediaQuery.of(context).size.width - 150,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+              width: MediaQuery.of(context).size.width * 0.9,
+              height: 82,
+              child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                width: 82,
+                height: 82,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFB6B6B6),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                ),
+                SizedBox(width: 16),
+                Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                   Text(
                     name,
+                    maxLines: 2,
                     style: const TextStyle(
-                      fontSize: 16,
-                      color: Constant.colorBlack,
-                      fontWeight: Constant.fontBold,
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
                     ),
-                    maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(
-                    height: 5,
-                  ),
+                  SizedBox(height: 12),
                   Text(
                     status,
                     style: const TextStyle(
-                      fontSize: 14,
-                      color: Constant.colorGrey,
-                      fontWeight: Constant.fontMedium,
+                    color: Color(0xFF7D7F1D),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
                     ),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  const Text(
-                    'Estimasi: Rp. 50.000,-',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Constant.colorGrey,
-                      fontWeight: Constant.fontMedium,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
+                ),
+                const Text(
+                'Rp5.000',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w400,
+                ),
+                ),
+              ],
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -370,7 +371,7 @@ class _HomePageState extends State<HomePage> {
   Widget _listHistory({required BuildContext context, required String date}) {
     return Wrap(
       direction: Axis.vertical,
-      spacing: 5,
+      spacing: 16,
       children: [
         Text(
           date,
@@ -382,7 +383,7 @@ class _HomePageState extends State<HomePage> {
         ),
         _itemHistory(
             context: context,
-            name: 'Data 1',
+            name: 'Plastik 1kg, Botol 2kg, Lainnya 2kg',
             status: 'Menunggu konfirmasi driver'),
         _itemHistory(
           context: context,
