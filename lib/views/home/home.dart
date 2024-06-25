@@ -170,8 +170,8 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async{
-          Transaction.addData();
+        onPressed: () async {
+          await Transaction.addData();
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => const AddDataPage(),
