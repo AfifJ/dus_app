@@ -1,5 +1,5 @@
 import 'package:dus_app/config/constant.dart';
-import 'package:dus_app/services/transaction.dart';
+import 'package:dus_app/services/data.dart';
 import 'package:dus_app/views/home/draft.dart';
 import 'package:dus_app/views/home/notif.dart';
 import 'package:dus_app/views/process/add_data.dart';
@@ -171,10 +171,12 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await Transaction.addData();
+          String id = await DataSampah.createData();
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => const AddDataPage(),
+              builder: (context) => AddDataPage(
+                id: id,
+              ),
             ),
           );
         },

@@ -1,33 +1,41 @@
 import 'package:dus_app/config/constant.dart';
+import 'package:dus_app/models/item_transaction.dart';
 import 'package:dus_app/models/item_type.dart';
+import 'package:dus_app/services/data.dart';
 import 'package:flutter/material.dart';
 
 class AddTypePage extends StatefulWidget {
-  const AddTypePage({super.key});
+  final String id;
+  final List<ItemTransaction> item;
+  const AddTypePage({
+    super.key,
+    required this.id,
+    required this.item,
+  });
 
   @override
   State<AddTypePage> createState() => _AddTypePageState();
 }
 
 class _AddTypePageState extends State<AddTypePage> {
-  List<ItemTypeModel> dataType = [
-    ItemTypeModel(
-      img: '${Constant.iconPath}/plastic.png',
+  List<ItemType> dataType = [
+    ItemType(
+      img: 'plastic.png',
       title: 'Plastik',
       example: 'Contoh: Kresek',
-      price: '1000',
+      price: 1000,
     ),
-    ItemTypeModel(
-      img: '${Constant.iconPath}/paper.png',
+    ItemType(
+      img: 'paper.png',
       title: 'Kertas',
       example: 'Contoh: Buku, koran, kardus',
-      price: '1000',
+      price: 1000,
     ),
-    ItemTypeModel(
-      img: '${Constant.iconPath}/bottle.png',
+    ItemType(
+      img: 'bottle.png',
       title: 'Botol',
       example: 'Contoh: Botol Mineral',
-      price: '5000',
+      price: 5000,
     ),
   ];
 
@@ -68,9 +76,9 @@ class _AddTypePageState extends State<AddTypePage> {
                 GestureDetector(
                   onTap: () {
                     setState(() {
-                      if(_selectedItem == index){
+                      if (_selectedItem == index) {
                         _selectedItem = -1;
-                      }else{
+                      } else {
                         _selectedItem = index;
                       }
                     });
@@ -92,7 +100,7 @@ class _AddTypePageState extends State<AddTypePage> {
                     child: Row(
                       children: [
                         Image.asset(
-                          model.img,
+                          '${Constant.iconPath}/${model.img}',
                         ),
                         const SizedBox(
                           width: 10,
@@ -162,6 +170,19 @@ class _AddTypePageState extends State<AddTypePage> {
         padding: const EdgeInsets.all(20),
         child: ElevatedButton(
           onPressed: () {
+            widget.item.add(
+              ItemTransaction(
+                name: dataType[_selectedItem].img,
+                type: dataType[_selectedItem].title,
+                weight: 1,
+                pricePerKg: dataType[_selectedItem].price,
+              ),
+            );
+            if (_selectedItem > -1) {
+              DataSampah.updateData(id: widget.id, dataEdit: {
+                'items': widget.item.map((e) => e.toMap()).toList(),
+              });
+            }
             Navigator.of(context).pop();
           },
           style: ElevatedButton.styleFrom(

@@ -21,7 +21,7 @@ class _SplashPageState extends State<SplashPage> {
         if (snapshot.connectionState == ConnectionState.active) {
           User? user = snapshot.data;
           if (user == null) {
-            return const AuthPage();
+            return const HomePage();
           } else {
             return const HomePage();
           }

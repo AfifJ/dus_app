@@ -148,8 +148,6 @@ class _EditPassPageState extends State<EditPassPage> {
 
   void _updatePassword() {
     if (_formKey.currentState!.validate()) {
-      // Implementasi logika update password di sini
-      print('Password diperbarui');
       // Setelah berhasil, kembali ke halaman sebelumnya
       Navigator.of(context).pop();
     }

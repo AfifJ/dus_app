@@ -20,7 +20,7 @@ class Auth {
         usersCol.doc(user.uid).set({'email': email, 'nama': nama});
       }
     } on FirebaseAuthException catch (e) {
-      print(e.code);
+      e.toString();
     }
     return user;
   }
@@ -39,7 +39,7 @@ class Auth {
           .user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('user not found!');
+        e.toString();
       }
     }
     return user;

@@ -1,10 +1,10 @@
-class ItemTypeModel {
+class ItemType {
   String img;
   String title;
   String example;
-  String price;
+  double price;
 
-  ItemTypeModel({
+  ItemType({
     required this.img,
     required this.title,
     required this.example,

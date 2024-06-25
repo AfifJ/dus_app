@@ -6,16 +6,16 @@ class DataTransaction {
   final String id;
   final String imageUrl;
   final int status;
-  final List<ItemTransaction> recyclableItems;
+  final List<ItemTransaction> items;
   final DataAddress pickupAddress;
-  final DateTime pickupSchedule;
+  DateTime pickupSchedule;
   final ContactPerson contact;
 
   DataTransaction({
     required this.id,
     required this.imageUrl,
     required this.status,
-    required this.recyclableItems,
+    required this.items,
     required this.pickupAddress,
     required this.pickupSchedule,
     required this.contact,
@@ -26,7 +26,7 @@ class DataTransaction {
       'id': id,
       'imageUrl': imageUrl,
       'status': status,
-      'items': recyclableItems.map((item) => item.toMap()).toList(),
+      'items': items,
       'pickUpAddress': pickupAddress.toMap(),
       'pickupSchedule': pickupSchedule,
       'contact': contact.toMap(),

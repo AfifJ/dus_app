@@ -1,4 +1,7 @@
 import 'package:dus_app/config/constant.dart';
+import 'package:dus_app/models/data_transaction.dart';
+import 'package:dus_app/services/data.dart';
+import 'package:dus_app/views/process/add_data.dart';
 import 'package:flutter/material.dart';
 
 class DraftPage extends StatefulWidget {
@@ -9,6 +12,8 @@ class DraftPage extends StatefulWidget {
 }
 
 class _DraftPageState extends State<DraftPage> {
+  List<DataTransaction> dataDraft = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +42,9 @@ class _DraftPageState extends State<DraftPage> {
           Padding(
             padding: const EdgeInsets.only(right: 8),
             child: TextButton(
-              onPressed: () {},
+              onPressed: () async {
+                await DataSampah.deleteDraft(dataDraft);
+              },
               child: const Text(
                 'Kosongkan',
                 style: TextStyle(
@@ -50,31 +57,52 @@ class _DraftPageState extends State<DraftPage> {
           ),
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(20),
-        children: [
-          Wrap(
-            runSpacing: 15,
+      body: StreamBuilder(
+        stream: DataSampah.getDraft(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          dataDraft = DataSampah.getDraftData(
+            draft: snapshot.data!.docs,
+          );
+          return ListView(
+            padding: const EdgeInsets.all(20),
             children: [
-              _itemDraft(title: 'Plastik 1kg, Botol 2kg, Lainnya', price: '20000',),
-              _itemDraft(title: 'Plastik 1kg, Botol 2kg, Lainnya', price: '20000',),
-              _itemDraft(title: 'Plastik 1kg, Botol 2kg, Lainnya', price: '20000',),
-              _itemDraft(title: 'Plastik 1kg, Botol 2kg, Lainnya', price: '20000',),
-              _itemDraft(title: 'Plastik 1kg, Botol 2kg, Lainnya', price: '20000',),
-              _itemDraft(title: 'Plastik 1kg, Botol 2kg, Lainnya', price: '20000',),
+              Wrap(
+                runSpacing: 15,
+                children: dataDraft
+                    .map(
+                      (e) => _itemDraft(
+                        id: e.id,
+                        title: e.id,
+                        price: '2000',
+                      ),
+                    )
+                    .toList(),
+              )
             ],
-          )
-        ],
+          );
+        },
       ),
     );
   }
 
   Widget _itemDraft({
+    required String id,
     required String title,
     required String price,
   }) {
     return InkWell(
-      onTap: (){},
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => AddDataPage(
+              id: id,
+            ),
+          ),
+        );
+      },
       borderRadius: BorderRadius.circular(8),
       child: Ink(
         child: Row(
