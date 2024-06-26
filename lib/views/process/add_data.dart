@@ -25,6 +25,7 @@ class _AddDataPageState extends State<AddDataPage> {
   DataTransaction data = DataTransaction(
     id: '',
     imageUrl: '',
+    ownerId: '',
     status: 0,
     items: [],
     pickupAddress: DataAddress(
@@ -260,6 +261,8 @@ class _AddDataPageState extends State<AddDataPage> {
                                 MaterialPageRoute(
                                   builder: (context) => EditLocPage(
                                     id: widget.id,
+                                    cp: data.contact,
+                                    alamat: data.pickupAddress,
                                   ),
                                 ),
                               );
@@ -425,6 +428,8 @@ class _AddDataPageState extends State<AddDataPage> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
+                        DataSampah.updateData(
+                            id: widget.id, dataEdit: {'status': 1});
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                             builder: (context) => const FinishOrder(),

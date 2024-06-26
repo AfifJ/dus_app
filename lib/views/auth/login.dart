@@ -122,17 +122,24 @@ class _LoginPageState extends State<LoginPage> {
                     borderRadius: BorderRadius.circular(16),
                   ),
                 ),
-                onPressed: () {
-                  Auth.login(
+                onPressed: () async {
+                  if (await Auth.login(
                     email: emailController.text,
                     password: passController.text,
-                  ).then((user) {
+                  )) {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) => const HomePage(),
                       ),
                     );
-                  });
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Gagal melakukan login.'),
+                      ),
+                    );
+                    return;
+                  }
                 },
                 child: const Text(
                   'Masuk',

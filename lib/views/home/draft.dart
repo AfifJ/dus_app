@@ -71,16 +71,34 @@ class _DraftPageState extends State<DraftPage> {
             children: [
               Wrap(
                 runSpacing: 15,
-                children: dataDraft
-                    .map(
-                      (e) => _itemDraft(
-                        id: e.id,
-                        imageUrl: e.imageUrl,
-                        title: e.id,
-                        price: '2000',
-                      ),
-                    )
-                    .toList(),
+                children: dataDraft.map(
+                  (e) {
+                    double a = 0;
+                    for (var element in e.items) {
+                      a += (element.weight * element.pricePerKg);
+                    }
+
+                    String title = 'Data Tanpa Item';
+                    if (e.items.isNotEmpty) {
+                      if (e.items.length > 2) {
+                        title =
+                            '${e.items[0].type} ${e.items[0].weight}Kg, ${e.items[1].type} ${e.items[0].weight}Kg, Lainnya';
+                      } else {
+                        List<String> dataType = [];
+                        for (var element in e.items) {
+                          dataType.add('${element.type} ${element.weight}Kg');
+                        }
+                        title = dataType.join(', ');
+                      }
+                    }
+                    return _itemDraft(
+                      id: e.id,
+                      imageUrl: e.imageUrl,
+                      title: title,
+                      price: '$a',
+                    );
+                  },
+                ).toList(),
               )
             ],
           );

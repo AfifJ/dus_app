@@ -1,9 +1,13 @@
 import 'package:dus_app/config/constant.dart';
+import 'package:dus_app/models/data_transaction.dart';
+import 'package:dus_app/services/auth.dart';
 import 'package:dus_app/services/data.dart';
+import 'package:dus_app/views/auth/auth.dart';
 import 'package:dus_app/views/home/draft.dart';
 import 'package:dus_app/views/home/notif.dart';
 import 'package:dus_app/views/process/add_data.dart';
 import 'package:dus_app/views/profile/profile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -100,27 +104,36 @@ class _HomePageState extends State<HomePage> {
                   width: 52,
                   height: 52,
                 ),
-                title: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'John Doe',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: Constant.fontMedium,
-                        color: Constant.colorBlack,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      'john@doe.com',
-                      style: TextStyle(
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
+                title: StreamBuilder(
+                  stream: Auth.getUser(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const SizedBox();
+                    }
+                    Map<String, dynamic> user = snapshot.data!.data()!;
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          user['nama'],
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: Constant.fontMedium,
+                            color: Constant.colorBlack,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          user['email'],
+                          style: const TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ),
             ),
@@ -164,6 +177,29 @@ class _HomePageState extends State<HomePage> {
               ),
               onTap: () {
                 Navigator.of(context).pop();
+              },
+            ),
+            ListTile(
+              leading: Image.asset(
+                '${Constant.iconPath}/logout.png',
+                width: 24,
+                height: 24,
+              ),
+              title: const Text(
+                'Keluar Akun',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Constant.colorError,
+                ),
+              ),
+              onTap: () async {
+                await FirebaseAuth.instance.signOut();
+                Navigator.of(context).pop();
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => const AuthPage(),
+                  ),
+                );
               },
             ),
           ],
@@ -280,27 +316,93 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(
             height: 30,
           ),
-          const Text(
-            'RIWAYAT',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: Constant.fontBold,
-            ),
+          StreamBuilder(
+            stream: DataSampah.getRiwayat(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              var data = DataSampah.getRiwayatData(data: snapshot.data?.docs);
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'RIWAYAT',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: Constant.fontBold,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Wrap(
+                    direction: Axis.vertical,
+                    spacing: 20,
+                    children: data
+                        .map(
+                          (e) => _listHistory(
+                            context: context,
+                            date: e.date,
+                            data: e.data,
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ],
+              );
+            },
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          Wrap(
-            direction: Axis.vertical,
-            spacing: 20,
-            children: [
-              _listHistory(context: context, date: '11 Juni 2024'),
-              _listHistory(context: context, date: '10 Juni 2024'),
-              _listHistory(context: context, date: '9 Juni 2024'),
-            ],
-          )
         ],
       ),
+    );
+  }
+
+  Widget _listHistory({
+    required BuildContext context,
+    required String date,
+    required List<DataTransaction> data,
+  }) {
+    return Wrap(
+      direction: Axis.vertical,
+      spacing: 16,
+      children: <Widget>[
+        Text(
+          date,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: Constant.fontBold,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        ...data.map((e) {
+          double a = 0;
+          for (var element in e.items) {
+            a += (element.weight * element.pricePerKg);
+          }
+
+          String title = 'Data Tanpa Item';
+          if (e.items.isNotEmpty) {
+            if (e.items.length > 2) {
+              title =
+                  '${e.items[0].type} ${e.items[0].weight}Kg, ${e.items[1].type} ${e.items[0].weight}Kg, Lainnya';
+            } else {
+              List<String> dataType = [];
+              for (var element in e.items) {
+                dataType.add('${element.type} ${element.weight}Kg');
+              }
+              title = dataType.join(', ');
+            }
+          }
+          return _itemHistory(
+            context: context,
+            name: title,
+            status: e.status.toString(),
+            price: a,
+            imageUrl: e.imageUrl,
+          );
+        })
+      ],
     );
   }
 
@@ -308,21 +410,15 @@ class _HomePageState extends State<HomePage> {
     required BuildContext context,
     required String name,
     required String status,
+    required double price,
+    required String imageUrl,
   }) {
     return InkWell(
       onTap: () {},
       borderRadius: BorderRadius.circular(12),
       child: Ink(
         decoration: BoxDecoration(
-          // color: Constant.colorWhite,
           borderRadius: BorderRadius.circular(12),
-          /* boxShadow: const [
-            BoxShadow(
-              color: Colors.black45,
-              blurRadius: 3,
-              offset: Offset(2, 2),
-            ),
-          ], */
         ),
         child: Column(
           children: [
@@ -336,8 +432,16 @@ class _HomePageState extends State<HomePage> {
                     width: 82,
                     height: 82,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFB6B6B6),
                       borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(
+                        imageUrl,
+                        height: 80,
+                        width: 80,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -357,9 +461,9 @@ class _HomePageState extends State<HomePage> {
                           overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: 12),
-                        Text(
-                          status,
-                          style: const TextStyle(
+                        const Text(
+                          'Menunggu Konfirmasi Driver.',
+                          style: TextStyle(
                             color: Color(0xFF7D7F1D),
                             fontSize: 12,
                             fontWeight: FontWeight.w400,
@@ -369,11 +473,11 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Rp5.000',
-                      style: TextStyle(
+                      price.toString(),
+                      style: const TextStyle(
                         color: Colors.black,
                         fontSize: 16,
                         fontFamily: 'Inter',
@@ -387,37 +491,6 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _listHistory({required BuildContext context, required String date}) {
-    return Wrap(
-      direction: Axis.vertical,
-      spacing: 16,
-      children: [
-        Text(
-          date,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: Constant.fontBold,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        _itemHistory(
-            context: context,
-            name: 'Plastik 1kg, Botol 2kg, Lainnya 2kg',
-            status: 'Menunggu konfirmasi driver'),
-        _itemHistory(
-          context: context,
-          name: 'Data 2',
-          status: 'Selesai',
-        ),
-        _itemHistory(
-          context: context,
-          name: 'Data 3',
-          status: 'Driver dalam perjalanan',
-        ),
-      ],
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:dus_app/models/item_transaction.dart';
 class DataTransaction {
   final String id;
   final String imageUrl;
+  final String ownerId;
   final int status;
   final List<ItemTransaction> items;
   final DataAddress pickupAddress;
@@ -14,6 +15,7 @@ class DataTransaction {
   DataTransaction({
     required this.id,
     required this.imageUrl,
+    required this.ownerId,
     required this.status,
     required this.items,
     required this.pickupAddress,
@@ -25,6 +27,7 @@ class DataTransaction {
     return {
       'id': id,
       'imageUrl': imageUrl,
+      'ownerId': ownerId,
       'status': status,
       'items': items,
       'pickUpAddress': pickupAddress.toMap(),

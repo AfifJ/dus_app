@@ -13,8 +13,11 @@ class BiodataPage extends StatefulWidget {
 
 class _BiodataPageState extends State<BiodataPage> {
   TextEditingController namaLengkapController = TextEditingController();
+  TextEditingController noHpController = TextEditingController();
   TextEditingController passController = TextEditingController();
   TextEditingController confirmPassController = TextEditingController();
+
+  bool isNotSame = false;
 
   bool isHide = true;
   bool isChecked = false;
@@ -56,8 +59,34 @@ class _BiodataPageState extends State<BiodataPage> {
             ),
             TextField(
               controller: namaLengkapController,
+              keyboardType: TextInputType.name,
+              textInputAction: TextInputAction.next,
               decoration: InputDecoration(
                 hintText: 'Nama anda',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            const Text(
+              'No. Handphone',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: Constant.fontSemiBold,
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            TextField(
+              controller: noHpController,
+              keyboardType: TextInputType.phone,
+              textInputAction: TextInputAction.next,
+              decoration: InputDecoration(
+                hintText: 'Nomor Handphone',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
@@ -78,6 +107,7 @@ class _BiodataPageState extends State<BiodataPage> {
             ),
             TextField(
               controller: passController,
+              textInputAction: TextInputAction.next,
               obscureText: isHide,
               decoration: InputDecoration(
                 hintText: 'Kata Sandi',
@@ -113,6 +143,7 @@ class _BiodataPageState extends State<BiodataPage> {
             ),
             TextField(
               controller: confirmPassController,
+              textInputAction: TextInputAction.done,
               obscureText: isHide,
               decoration: InputDecoration(
                 hintText: 'Kata Sandi',
@@ -205,6 +236,33 @@ class _BiodataPageState extends State<BiodataPage> {
                   ),
                 ),
                 onPressed: () {
+                  if (namaLengkapController.text.isEmpty ||
+                      noHpController.text.isEmpty ||
+                      passController.text.isEmpty ||
+                      confirmPassController.text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Lengkapi data terlebih dahulu.'),
+                      ),
+                    );
+                    return;
+                  }
+                  if (passController.text.length < 8) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Sandi minimal 8 karakter.'),
+                      ),
+                    );
+                    return;
+                  }
+                  if (passController.text != confirmPassController.text) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Konfirmasi sandi tidak sama.'),
+                      ),
+                    );
+                    return;
+                  }
                   if (!isChecked) {
                     // Show a hint (Snackbar in this case)
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -215,17 +273,24 @@ class _BiodataPageState extends State<BiodataPage> {
                     );
                     return;
                   }
-
                   // Retrieve email, password, and name
                   String email = widget.email;
                   String password = passController.text;
                   String nama = namaLengkapController.text;
+                  String noHp = noHpController.text;
 
                   // Call Auth.register
-                  Auth.register(email: email, password: password, nama: nama)
-                      .then((user) {
+                  Auth.register(
+                    email: email,
+                    password: password,
+                    nama: nama,
+                    noHp: noHp,
+                  ).then((user) {
                     Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => const HomePage(),),);
+                      MaterialPageRoute(
+                        builder: (context) => const HomePage(),
+                      ),
+                    );
                   });
                 },
                 child: const Text(

@@ -10,9 +10,13 @@ import 'package:latlong2/latlong.dart';
 
 class EditLocPage extends StatefulWidget {
   final String id;
+  final DataAddress alamat;
+  final ContactPerson cp;
   const EditLocPage({
     super.key,
     required this.id,
+    required this.alamat,
+    required this.cp,
   });
 
   @override
@@ -46,6 +50,29 @@ class _EditLocPageState extends State<EditLocPage> {
         });
       }
     });
+
+    namaController.text = widget.cp.name;
+    noHpController.text = widget.cp.phoneNumber;
+    provinsiController.text = widget.alamat.province;
+    kotaController.text = widget.alamat.city;
+    kecamatanController.text = widget.alamat.district;
+    kelurahanController.text = widget.alamat.subDistrict;
+    dusunController.text = widget.alamat.village.isEmpty
+        ? ''
+        : widget.alamat.village.split(',')[0];
+    rtController.text = widget.alamat.village.isEmpty
+        ? ''
+        : widget.alamat.village
+            .split(',')[1]
+            .split('/')[0]
+            .replaceAll('RT', '');
+    rwController.text = widget.alamat.village.isEmpty
+        ? ''
+        : widget.alamat.village
+            .split(',')[1]
+            .split('/')[1]
+            .replaceAll('RW', '');
+    detailController.text = widget.alamat.details;
   }
 
   @override
