@@ -1,4 +1,7 @@
 import 'package:dus_app/config/constant.dart';
+import 'package:dus_app/models/contact_person.dart';
+import 'package:dus_app/models/data_address.dart';
+import 'package:dus_app/services/data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
@@ -6,13 +9,20 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
 class EditLocPage extends StatefulWidget {
-  const EditLocPage({super.key});
+  final String id;
+  const EditLocPage({
+    super.key,
+    required this.id,
+  });
 
   @override
   State<EditLocPage> createState() => _EditLocPageState();
 }
 
 class _EditLocPageState extends State<EditLocPage> {
+  TextEditingController namaController = TextEditingController();
+  TextEditingController noHpController = TextEditingController();
+
   TextEditingController provinsiController = TextEditingController();
   TextEditingController kotaController = TextEditingController();
   TextEditingController kecamatanController = TextEditingController();
@@ -104,11 +114,12 @@ class _EditLocPageState extends State<EditLocPage> {
                     fontSize: 12,
                   ),
                 ),
-                const TextField(
-                  style: TextStyle(
+                TextField(
+                  controller: namaController,
+                  style: const TextStyle(
                     fontSize: 16,
                   ),
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Nama Pengguna',
                   ),
                 ),
@@ -121,12 +132,13 @@ class _EditLocPageState extends State<EditLocPage> {
                     fontSize: 12,
                   ),
                 ),
-                const TextField(
-                  style: TextStyle(
+                TextField(
+                  controller: noHpController,
+                  style: const TextStyle(
                     fontSize: 16,
                   ),
                   keyboardType: TextInputType.phone,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Nomor HP',
                   ),
                 ),
@@ -437,6 +449,26 @@ class _EditLocPageState extends State<EditLocPage> {
         padding: const EdgeInsets.all(20),
         child: ElevatedButton(
           onPressed: () {
+            ContactPerson cp = ContactPerson(
+              name: namaController.text,
+              phoneNumber: noHpController.text,
+            );
+            DataAddress address = DataAddress(
+              province: provinsiController.text,
+              city: kotaController.text,
+              district: kecamatanController.text,
+              subDistrict: kelurahanController.text,
+              village:
+                  '${dusunController.text}, RT${rtController.text}/RW${rwController.text}',
+              details: detailController.text,
+            );
+            DataSampah.updateData(
+              id: widget.id,
+              dataEdit: {
+                'contact': cp.toMap(),
+                'pickUpAddress': address.toMap(),
+              },
+            );
             Navigator.of(context).pop();
           },
           style: ElevatedButton.styleFrom(
@@ -473,12 +505,12 @@ class _EditLocPageState extends State<EditLocPage> {
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
-        // Permissions are denied, next time you could try
-        // requesting permissions again (this is also where
-        // Android's shouldShowRequestPermissionRationale
-        // returned true. According to Android guidelines
-        // your App should show an explanatory UI now.
-        return Future.error('Location permissions are denied');
+          // Permissions are denied, next time you could try
+          // requesting permissions again (this is also where
+          // Android's shouldShowRequestPermissionRationale
+          // returned true. According to Android guidelines
+          // your App should show an explanatory UI now.
+          return Future.error('Location permissions are denied');
         }
       }
 

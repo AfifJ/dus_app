@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dus_app/config/constant.dart';
 import 'package:dus_app/models/contact_person.dart';
 import 'package:dus_app/models/data_address.dart';
@@ -44,46 +46,7 @@ class _AddDataPageState extends State<AddDataPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Constant.colorLightWhite,
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: const Icon(
-            Icons.keyboard_arrow_left,
-            size: 24,
-            color: Constant.colorBlack,
-          ),
-        ),
-        title: const Center(
-          child: Text(
-            'Daur Ulang',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: Constant.fontBold,
-            ),
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: TextButton(
-              onPressed: () {},
-              child: const Text(
-                'Reset',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: Constant.fontBold,
-                  color: Constant.colorSukses,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-      body: StreamBuilder(
+    return StreamBuilder(
         stream: DataSampah.getDetail(
           id: widget.id,
         ),
@@ -95,14 +58,102 @@ class _AddDataPageState extends State<AddDataPage> {
             data: snapshot.data!.data()!,
           );
           items = data.items;
-          return ListView(
-            shrinkWrap: true,
-            padding: const EdgeInsets.all(20),
-            children: [
-              InkWell(
-                onTap: () => _dialogBuilder(context),
-                borderRadius: BorderRadius.circular(16),
-                child: Container(
+
+          double total = 0;
+          for (var i in items) {
+            total += i.pricePerKg * i.weight;
+          }
+          return Scaffold(
+            backgroundColor: Constant.colorLightWhite,
+            appBar: AppBar(
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: const Icon(
+                  Icons.keyboard_arrow_left,
+                  size: 24,
+                  color: Constant.colorBlack,
+                ),
+              ),
+              title: const Center(
+                child: Text(
+                  'Daur Ulang',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: Constant.fontBold,
+                  ),
+                ),
+              ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: TextButton(
+                    onPressed: () {},
+                    child: const Text(
+                      'Reset',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: Constant.fontBold,
+                        color: Constant.colorSukses,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            body: ListView(
+              shrinkWrap: true,
+              padding: const EdgeInsets.all(20),
+              children: [
+                InkWell(
+                  onTap: () => _dialogBuilder(),
+                  borderRadius: BorderRadius.circular(16),
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Constant.colorWhite,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: Constant.colorBlack.withOpacity(0.2),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          '${Constant.iconPath}/upload.png',
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Upload Gambar',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: Constant.fontBold,
+                                ),
+                              ),
+                              Text(
+                                'Gambar keseluruhan dari sampah',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: Constant.colorWhite,
@@ -111,341 +162,300 @@ class _AddDataPageState extends State<AddDataPage> {
                       color: Constant.colorBlack.withOpacity(0.2),
                     ),
                   ),
-                  child: Row(
+                  child: Column(
                     children: [
-                      Image.asset(
-                        '${Constant.iconPath}/upload.png',
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      const Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Upload Gambar',
+                      Row(
+                        children: [
+                          Image.asset('${Constant.iconPath}/trash.png'),
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          const Expanded(
+                            child: Text(
+                              'Pilih Jenis Sampah',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: Constant.fontBold,
                               ),
                             ),
-                            Text(
-                              'Gambar keseluruhan dari sampah',
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => AddTypePage(
+                                    id: widget.id,
+                                    item: items,
+                                  ),
+                                ),
+                              );
+                            },
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.all(8),
+                            ),
+                            child: const Text(
+                              'Tambah',
                               style: TextStyle(
                                 fontSize: 14,
+                                fontWeight: Constant.fontBold,
+                                color: Constant.colorSukses,
                               ),
                             ),
-                          ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Wrap(
+                        runSpacing: 15,
+                        children: items
+                            .map(
+                              (e) => _cardItem(
+                                index: items.indexOf(e),
+                                iconName: '${Constant.iconPath}/${e.name}',
+                                title: e.type,
+                                qty: e.weight,
+                                price: e.pricePerKg,
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Constant.colorWhite,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: Constant.colorBlack.withOpacity(0.2),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Image.asset('${Constant.iconPath}/pin_loc.png'),
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          const Expanded(
+                            child: Text(
+                              'Alamat Penjemputan',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: Constant.fontBold,
+                              ),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => EditLocPage(
+                                    id: widget.id,
+                                  ),
+                                ),
+                              );
+                            },
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.all(8),
+                            ),
+                            child: const Text(
+                              'Ganti',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: Constant.fontBold,
+                                color: Constant.colorSukses,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Text(
+                        data.contact.name,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: Constant.fontSemiBold,
+                        ),
+                      ),
+                      Text(
+                        data.contact.phoneNumber,
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                      Text(
+                        data.pickupAddress.details.isEmpty
+                            ? ''
+                            : '${data.pickupAddress.village} (${data.pickupAddress.details})',
+                        style: const TextStyle(
+                          fontSize: 14,
                         ),
                       ),
                     ],
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Constant.colorWhite,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: Constant.colorBlack.withOpacity(0.2),
-                  ),
+                const SizedBox(
+                  height: 15,
                 ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Image.asset('${Constant.iconPath}/trash.png'),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        const Expanded(
-                          child: Text(
-                            'Pilih Jenis Sampah',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: Constant.fontBold,
-                            ),
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Constant.colorWhite,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: Constant.colorBlack.withOpacity(0.2),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Image.asset('${Constant.iconPath}/calendar.png'),
+                          const SizedBox(
+                            width: 15,
                           ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => AddTypePage(
-                                  id: widget.id,
-                                  item: items,
-                                ),
+                          const Expanded(
+                            child: Text(
+                              'Jadwal Pengiriman',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: Constant.fontBold,
                               ),
-                            );
-                          },
-                          style: TextButton.styleFrom(
-                            padding: const EdgeInsets.all(8),
-                          ),
-                          child: const Text(
-                            'Tambah',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: Constant.fontBold,
-                              color: Constant.colorSukses,
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Wrap(
-                      runSpacing: 15,
-                      children: items
-                          .map(
-                            (e) => _cardItem(
-                              index: items.indexOf(e),
-                              iconName: '${Constant.iconPath}/${e.name}',
-                              title: e.type,
-                              qty: e.weight,
-                              price: e.pricePerKg,
+                          TextButton(
+                            onPressed: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime.now(),
+                                lastDate: DateTime(DateTime.now().year + 1),
+                              );
+                              if (pickedDate != null) {
+                                DataSampah.updateData(
+                                    id: data.id,
+                                    dataEdit: {'pickupSchedule': pickedDate});
+                              }
+                            },
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.all(8),
                             ),
-                          )
-                          .toList(),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Constant.colorWhite,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: Constant.colorBlack.withOpacity(0.2),
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Image.asset('${Constant.iconPath}/pin_loc.png'),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        const Expanded(
-                          child: Text(
-                            'Alamat Penjemputan',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: Constant.fontBold,
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const EditLocPage(),
+                            child: const Text(
+                              'Pilih',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: Constant.fontBold,
+                                color: Constant.colorSukses,
                               ),
-                            );
-                          },
-                          style: TextButton.styleFrom(
-                            padding: const EdgeInsets.all(8),
-                          ),
-                          child: const Text(
-                            'Ganti',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: Constant.fontBold,
-                              color: Constant.colorSukses,
                             ),
                           ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Text(
+                        DateFormat(
+                          'dd MMMM yyyy',
+                        ).format(
+                          data.pickupSchedule,
                         ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Text(
-                      data.contact.name,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: Constant.fontSemiBold,
-                      ),
-                    ),
-                    Text(
-                      data.contact.phoneNumber,
-                      style: const TextStyle(
-                        fontSize: 14,
-                      ),
-                    ),
-                    Text(
-                      data.pickupAddress.details,
-                      style: const TextStyle(
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Constant.colorWhite,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: Constant.colorBlack.withOpacity(0.2),
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Image.asset('${Constant.iconPath}/calendar.png'),
-                        const SizedBox(
-                          width: 15,
+                        style: const TextStyle(
+                          fontSize: 16,
                         ),
-                        const Expanded(
-                          child: Text(
-                            'Jadwal Pengiriman',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: Constant.fontBold,
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime.now(),
-                              lastDate: DateTime(DateTime.now().year + 1),
-                            );
-                            if (pickedDate != null) {
-                              DataSampah.updateData(
-                                  id: data.id,
-                                  dataEdit: {'pickupSchedule': pickedDate});
-                            }
-                          },
-                          style: TextButton.styleFrom(
-                            padding: const EdgeInsets.all(8),
-                          ),
-                          child: const Text(
-                            'Pilih',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: Constant.fontBold,
-                              color: Constant.colorSukses,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Text(
-                      DateFormat(
-                        'dd MMMM yyyy',
-                      ).format(
-                        data.pickupSchedule,
-                      ),
-                      style: const TextStyle(
-                        fontSize: 16,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          );
-        },
-      ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(16),
-            topRight: Radius.circular(16),
-          ),
-          color: Constant.colorWhite,
-          boxShadow: [
-            BoxShadow(
-              color: Constant.colorBlack.withOpacity(0.25),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Total',
-                  style: TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
-                Text(
-                  'Rp. 10.000',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: Constant.fontBold,
+                      )
+                    ],
                   ),
                 ),
               ],
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => const FinishOrder(),
+            bottomNavigationBar: Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(16),
+                  topRight: Radius.circular(16),
+                ),
+                color: Constant.colorWhite,
+                boxShadow: [
+                  BoxShadow(
+                    color: Constant.colorBlack.withOpacity(0.25),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Total',
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                      Text(
+                        'Rp. $total',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: Constant.fontBold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => const FinishOrder(),
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Constant.colorDarkPrimary,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 20,
+                          horizontal: 24,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      child: const Text(
+                        'Proses Transaksi',
+                        style: TextStyle(
+                          color: Constant.colorWhite,
+                          fontWeight: Constant.fontSemiBold,
+                          fontSize: 16,
+                        ),
+                      ),
                     ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Constant.colorDarkPrimary,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 20,
-                    horizontal: 24,
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-                child: const Text(
-                  'Proses Transaksi',
-                  style: TextStyle(
-                    color: Constant.colorWhite,
-                    fontWeight: Constant.fontSemiBold,
-                    fontSize: 16,
-                  ),
-                ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
+        });
   }
 
   Widget _cardItem({
@@ -555,7 +565,7 @@ class _AddDataPageState extends State<AddDataPage> {
     );
   }
 
-  Future<void> _dialogBuilder(BuildContext context) {
+  Future<void> _dialogBuilder() {
     return showDialog(
       context: context,
       barrierDismissible: false,
@@ -570,7 +580,9 @@ class _AddDataPageState extends State<AddDataPage> {
                 child: ElevatedButton(
                   onPressed: () async {
                     Navigator.of(context).pop();
+                    showLoadingDialog(context);
                     await _pickImage(0);
+                    hideLoadingDialog(context);
                   },
                   child: const Row(
                     children: [
@@ -599,7 +611,9 @@ class _AddDataPageState extends State<AddDataPage> {
                 child: ElevatedButton(
                   onPressed: () async {
                     Navigator.of(context).pop();
+                    showLoadingDialog(this.context);
                     await _pickImage(1);
+                    hideLoadingDialog(this.context);
                   },
                   child: const Row(
                     children: [
@@ -635,6 +649,24 @@ class _AddDataPageState extends State<AddDataPage> {
     );
   }
 
+  Future<void> showLoadingDialog(
+    BuildContext context,
+  ) {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
+  void hideLoadingDialog(BuildContext context) {
+    Navigator.of(context).pop();
+  }
+
   Future _pickImage(int code) async {
     try {
       final image = await ImagePicker().pickImage(
@@ -643,6 +675,17 @@ class _AddDataPageState extends State<AddDataPage> {
       if (image == null) {
         return;
       }
+      final imageTemp = File(image.path);
+      String imageUrl = await DataSampah.uploadImage(
+        data: imageTemp,
+        id: widget.id,
+      );
+      DataSampah.updateData(
+        id: widget.id,
+        dataEdit: {
+          'imageUrl': imageUrl,
+        },
+      );
     } catch (e) {
       e.toString();
     }

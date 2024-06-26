@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dus_app/models/contact_person.dart';
 import 'package:dus_app/models/data_address.dart';
 import 'package:dus_app/models/data_transaction.dart';
 import 'package:dus_app/models/item_transaction.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:intl/intl.dart';
 
 class DataSampah {
@@ -63,12 +66,25 @@ class DataSampah {
     );
   }
 
+  static Future<String> uploadImage({
+    required File data,
+    required String id,
+  }) async {
+    String url = '';
+    final storage =
+        FirebaseStorage.instance.ref().child('sampahImages/$id.jpg');
+    await storage.putFile(data);
+    url = await storage.getDownloadURL();
+    return url;
+  }
+
   static void updateData({
     required String id,
     required Map<String, dynamic> dataEdit,
   }) {
     FirebaseFirestore.instance.collection('data').doc(id).update(dataEdit);
   }
+
   static Stream<QuerySnapshot<Map<String, dynamic>>> getDraft() {
     return FirebaseFirestore.instance
         .collection('data')

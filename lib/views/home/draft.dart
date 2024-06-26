@@ -75,6 +75,7 @@ class _DraftPageState extends State<DraftPage> {
                     .map(
                       (e) => _itemDraft(
                         id: e.id,
+                        imageUrl: e.imageUrl,
                         title: e.id,
                         price: '2000',
                       ),
@@ -90,6 +91,7 @@ class _DraftPageState extends State<DraftPage> {
 
   Widget _itemDraft({
     required String id,
+    required String imageUrl,
     required String title,
     required String price,
   }) {
@@ -115,11 +117,21 @@ class _DraftPageState extends State<DraftPage> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Center(
-                child: Image.asset(
-                  '${Constant.iconPath}/default_draft.png',
-                  height: 42.5,
-                  width: 42.5,
-                ),
+                child: imageUrl.isEmpty
+                    ? Image.asset(
+                        '${Constant.iconPath}/default_draft.png',
+                        height: 42.5,
+                        width: 42.5,
+                      )
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(
+                          imageUrl,
+                          height: 80,
+                          width: 80,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
               ),
             ),
             const SizedBox(
